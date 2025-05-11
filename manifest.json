@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "RealDeal - Scam Detector",
+  "version": "1.0",
+  "description": "Helps users detect eCommerce scams with price tracking, seller verification, and review analysis.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": [
+    "https://www.pricebefore.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.pricebefore.com/*"
+      ],
+      "js": ["content.js"]
+    }
+  ]
+}
