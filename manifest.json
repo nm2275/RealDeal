@@ -11,11 +11,9 @@
     "default_popup": "popup.html"
   },
   "content_scripts": [
-    {
-      "matches": [
-        "https://www.pricebefore.com/*"
-      ],
-      "js": ["content.js"]
-    }
-  ]
+  {
+    "matches": ["https://www.meesho.com/*"],
+    "js": ["content.js"]
+  }
+]
 }
