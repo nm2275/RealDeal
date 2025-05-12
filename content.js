@@ -1,17 +1,25 @@
+console.log("Content script loaded!");
 (function() {
-    // Example: Extract price history from a table with class 'price-table'
-    const rows = document.querySelectorAll('.price-table tr');
-    const priceData = [];
-    rows.forEach(row => {
-      const cells = row.querySelectorAll('td');
-      if (cells.length >= 2) {
-        priceData.push({
-          date: cells[0].innerText.trim(),
-          price: parseFloat(cells[1].innerText.replace(/[^0-9.]/g, ''))
-        });
-      }
+  const url = window.location.href;
+  const productId = url.split('/').pop();
+  console.log("Product ID:", productId);
+
+  const priceTag = document.querySelector('.sc-eDvSVe.biMVPh');
+  if (!priceTag) {
+    console.log("Price tag not found!");
+    return;
+  }
+
+  const price = parseFloat(priceTag.textContent.replace(/[^0-9.]/g, ''));
+  console.log("Extracted price:", price);
+
+  const date = new Date().toISOString().replace('T', ' ').slice(0, 19);
+  const key = `priceHistory_${productId}`;
+  chrome.storage.local.get([key], (result) => {
+    const history = result[key] || [];
+    history.push({ date, price });
+    chrome.storage.local.set({ [key]: history }, () => {
+      console.log("Saved to storage:", key, history);
     });
-  
-    // Save data to chrome.storage so popup can access it
-    chrome.storage.local.set({ priceData });
-  })();
+  });
+})();
